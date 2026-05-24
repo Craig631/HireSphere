@@ -1,0 +1,1031 @@
+/* =========================
+   FIX FIXED NAVBAR OVERLAP
+========================= */
+
+body {
+    padding-top: 80px; /* adjust if navbar is taller */
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:#ffffff;
+    color:#111827;
+    overflow-x:hidden;
+}
+
+/* NAVBAR */
+.navbar{
+    padding:12px 0;
+    background:#ffffff;
+}
+
+.navbar-brand{
+    color:#0000FF !important;
+}
+
+.nav-search{
+    flex:1;
+    justify-content:center;
+}
+
+.search-pill{
+    display:flex;
+    align-items:center;
+    background:#ffffff;
+    border-radius:50px;
+    padding:10px 18px;
+    border:1px solid #e5e7eb;
+    gap:15px;
+}
+
+.divider{
+    width:1px;
+    height:20px;
+    background:#d1d5db;
+}
+
+.search-btn{
+    border:none;
+    background:#0057FF;
+    color:white;
+    width:35px;
+    height:35px;
+    border-radius:50%;
+}
+
+/* HERO SECTION */
+.hero-section{
+    min-height: 80vh;
+    background:linear-gradient(to right,#f8fbff,#eef4ff);
+    padding: 100px 0 60px 0;
+}
+
+.hero-badge{
+    background:#dbeafe;
+    color:#0057FF;
+    padding:10px 18px;
+    border-radius:30px;
+    font-weight:600;
+    display:inline-block;
+}
+
+.hero-title{
+    font-size:3.2rem;
+    font-weight:700;
+    line-height:1.2;
+}
+
+.hero-text{
+    font-size:1.05rem;
+    color:#6b7280;
+    max-width:550px;
+    line-height: 1.6;
+}
+
+.hero-search{
+    background:white;
+    padding:25px;
+    border-radius:25px;
+    margin-top:40px;
+}
+
+.search-label{
+    font-size:14px;
+    font-weight:600;
+    margin-bottom:5px;
+    display:block;
+}
+
+.hero-btn{
+    height:55px;
+    border-radius:15px;
+    font-weight:600;
+}
+
+.hero-image{
+    width:100%;
+    border-radius:30px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.15);
+}
+
+/* FEATURED SECTION */
+.featured-section{
+    padding:60px 0;
+}
+
+/* VEHICLE CARDS */
+/* VEHICLE LINKS */
+.vehicle-link{
+    text-decoration:none;
+    color:inherit;
+}
+
+/* VEHICLE CARDS */
+.vehicle-card{
+    border-radius:20px;
+    overflow:hidden;
+    transition:0.3s ease;
+    background:#ffffff;
+    height:100%;
+}
+
+.vehicle-card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 15px 35px rgba(0,0,0,0.10);
+}
+
+.vehicle-card img{
+    width:100%;
+    height:240px;
+    object-fit:cover;
+}
+
+.vehicle-card .card-body{
+    padding:20px;
+}
+
+.rating{
+    font-size:14px;
+    font-weight:600;
+    color:#f59e0b;
+}
+
+/* BUTTONS */
+.btn-primary{
+    background:#0000FF;
+    border:none;
+}
+
+.btn-primary:hover{
+    background:#0000cc;
+}
+
+.btn-outline-primary{
+    border-color:#0000FF;
+    color:#0000FF;
+}
+
+.btn-outline-primary:hover{
+    background:#0000FF;
+}
+
+/* RESPONSIVE */
+@media(max-width:992px){
+
+    .hero-title{
+        font-size:2.4rem;
+    }
+
+    .hero-section{
+        text-align:center;
+    }
+
+    .hero-text{
+        margin:auto;
+    }
+
+    .hero-search{
+        margin-top:30px;
+    }
+
+}
+
+/* CATEGORY BAR */
+.category-bar{
+    background: #ffffff;
+    border-bottom: 1px solid #eef2f7;
+    position: sticky;
+    top: 80px;
+    z-index: 10;
+}
+
+.category-scroll{
+    padding: 5px 0;
+}
+
+.category-btn{
+    border: 1px solid #e5e7eb;
+    background: #ffffff;
+    padding: 10px 18px;
+    border-radius: 30px;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: 0.2s ease;
+    cursor: pointer;
+}
+
+.category-btn:hover{
+    border-color: #0000FF;
+    color: #0000FF;
+    transform: translateY(-2px);
+}
+
+.category-btn.active{
+    background: #0000FF;
+    color: white;
+    border-color: #0000FF;
+}
+
+/* VEHICLE DETAILS PAGE */
+.vehicle-details-section{
+    background:#f8fbff;
+    padding-top:100px;
+}
+
+.details-main-image{
+    width:100%;
+    height:450px;
+    object-fit:cover;
+    border-radius:25px;
+}
+
+.details-small-image{
+    width:100%;
+    height:242px;
+    object-fit:cover;
+    border-radius:20px;
+}
+
+.details-card{
+    background:white;
+    padding:30px;
+    border-radius:25px;
+    margin-bottom:20px;
+}
+
+.spec-box{
+    background:#f3f6fb;
+    padding:18px;
+    border-radius:15px;
+    font-weight:500;
+    text-align:center;
+}
+
+.host-avatar{
+    width:60px;
+    height:60px;
+    background:#0000FF;
+    color:white;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+    font-size:22px;
+}
+
+.booking-card{
+    background:white;
+    padding:30px;
+    border-radius:25px;
+    position:sticky;
+    top:120px;
+}
+
+.insurance-box{
+    background:#eef4ff;
+    padding:15px;
+    border-radius:15px;
+}
+
+@media(max-width:992px){
+
+    .details-main-image{
+        height:350px;
+    }
+
+    .details-small-image{
+        height:160px;
+    }
+
+    .booking-card{
+        margin-top:30px;
+    }
+
+}
+
+/* FOOTER */
+.footer-section{
+    background:#0f172a;
+    color:white;
+    padding:80px 0 30px;
+}
+
+.footer-logo{
+    font-size:32px;
+    font-weight:700;
+}
+
+.footer-text{
+    color:#cbd5e1;
+    line-height:1.8;
+}
+
+.footer-title{
+    margin-bottom:25px;
+    font-weight:600;
+}
+
+.footer-links{
+    list-style:none;
+    padding:0;
+    margin:0;
+}
+
+.footer-links li{
+    margin-bottom:15px;
+}
+
+.footer-links a{
+    text-decoration:none;
+    color:#cbd5e1;
+    transition:0.3s ease;
+}
+
+.footer-links a:hover{
+    color:white;
+}
+
+.social-icons{
+    display:flex;
+    gap:20px;
+}
+
+.social-icons a{
+    color:#cbd5e1;
+    text-decoration:none;
+}
+
+.social-icons a:hover{
+    color:white;
+}
+
+.footer-bottom{
+    border-top:1px solid rgba(255,255,255,0.1);
+    margin-top:60px;
+    padding-top:30px;
+    text-align:center;
+    color:#94a3b8;
+}
+
+/* =========================
+   VEHICLE DETAILS PAGE
+========================= */
+
+.feature-box{
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 16px;
+    padding: 20px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: 0.3s ease;
+}
+
+.feature-box i{
+    font-size: 1.3rem;
+    color: #0000FF;
+}
+
+.feature-box:hover{
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+/* BOOKING CARD */
+
+.booking-card{
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 30px;
+    position: sticky;
+    top: 100px;
+    border: 1px solid #e9ecef;
+}
+
+.booking-input{
+    border-radius: 12px;
+    padding: 12px;
+}
+
+.price-summary{
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 16px;
+}
+
+.reserve-btn{
+    padding: 14px;
+    border-radius: 14px;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+/* MOBILE RESPONSIVE */
+
+@media(max-width: 991px){
+
+    .booking-card{
+        position: relative;
+        top: 0;
+    }
+
+}
+
+/* BRAND */
+.navbar-brand{
+    text-decoration:none;
+}
+
+.home-icon{
+    width:42px;
+    height:42px;
+    background:#0000FF;
+    color:white;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+    transition:0.3s ease;
+}
+
+.navbar-brand:hover .home-icon{
+    transform:scale(1.08);
+}
+
+.brand-text{
+    font-size:28px;
+    font-weight:700;
+    color:#0f172a;
+}
+
+/* =========================
+   PAYMENT METHODS
+========================= */
+
+.payment-options{
+    display: grid;
+    gap: 15px;
+}
+
+.payment-method{
+    border: 1px solid #dee2e6;
+    border-radius: 16px;
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    background: #ffffff;
+}
+
+.payment-method i{
+    font-size: 1.3rem;
+    color: #0d6efd;
+}
+
+.payment-method:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+}
+
+.active-payment{
+    border: 2px solid #0000FF;
+    background: #f0f7ff;
+}
+
+.payment-form{
+    margin-top: 20px;
+}
+
+/* =========================
+   AUTH MODALS
+========================= */
+
+.auth-modal{
+    border: none;
+    border-radius: 24px;
+    overflow: hidden;
+}
+
+.auth-input{
+    border-radius: 14px;
+    padding: 14px;
+}
+
+.auth-btn{
+    padding: 14px;
+    border-radius: 14px;
+    font-weight: 600;
+}
+
+.auth-divider{
+    position: relative;
+    text-align: center;
+}
+
+.auth-divider::before{
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: #dee2e6;
+}
+
+.auth-divider span{
+    position: relative;
+    background: #ffffff;
+    padding: 0 15px;
+    color: #6c757d;
+    font-size: 14px;
+}
+
+.auth-social-btn{
+    border-radius: 14px;
+    padding: 12px;
+    font-weight: 500;
+}
+
+.btn-google{
+    background: #ffffff;
+    color: #202124;
+    border: 1px solid #d1d5db;
+}
+
+.google-icon{
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+    vertical-align: -2px;
+}
+
+.btn-facebook{
+    background: #1877f2;
+    color: #ffffff;
+    border: 1px solid #1877f2;
+}
+
+.btn-apple {
+    background: #000000;
+    color: #ffffff;
+    border: 1px solid #000000;
+}
+
+.btn-microsoft {
+    background: #ffffff;
+    color: #5e5e5e;
+    border: 1px solid #d1d5db;
+}
+
+.btn-phone {
+    background: #25D366;
+    color: #ffffff;
+    border: 1px solid #25D366;
+}
+
+.btn-facebook i{
+    color: #ffffff;
+    margin-right: 10px;
+}
+
+.password-toggle{
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    color: #6c757d;
+}
+
+.host-cta{
+    background: #f8f9fa;
+    border-radius: 18px;
+    padding: 20px;
+}
+
+.search-box{
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* CLEAN UP DEFAULT BROWSER INPUTS */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* Styles for the Airbnb-style main search bar inserted into the hero */
+#main-search-bar{
+    background: #ffffff;
+    box-shadow: 0 10px 30px rgba(2, 6, 23, 0.08);
+    border-radius: 9999px;
+    border: 1px solid #e5e7eb;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-top: 35px;
+    transition: box-shadow 0.3s ease;
+}
+
+#main-search-bar:hover {
+    box-shadow: 0 15px 45px rgba(2, 6, 23, 0.12);
+}
+
+/* New segmented search bar styles */
+.main-search-bar{
+    display:flex;
+    align-items:center;
+}
+
+.search-segment{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    flex: 1;
+    padding: 14px 24px;
+    border-radius: 9999px;
+    transition: 0.2s ease;
+    cursor: pointer;
+    min-width: 0;
+}
+
+.search-segment:hover{
+    background: #f3f4f6;
+}
+
+.segment-icon{
+    font-size:20px;
+    color:#6b7280;
+    flex-shrink: 0;
+}
+
+.segment-body{
+    display:flex;
+    flex-direction:column;
+    min-width: 0;
+    flex: 1;
+}
+
+.segment-label{
+    font-size:12px;
+    color:#111827;
+    font-weight:600;
+    margin-bottom: 2px;
+}
+
+.segment-input{
+    border: none;
+    outline: none;
+    padding: 0;
+    background: transparent;
+    font-size: 14px;
+    font-weight: 400;
+    width: 100%;
+    color: #4b5563;
+    cursor: pointer;
+    min-height: 21px;
+}
+
+.segment-input:focus {
+    color: #111827;
+}
+
+.segment-input::placeholder {
+    color: #9ca3af;
+}
+
+.date-input{
+    width: auto;
+}
+
+.divider-vert{
+    width:1px;
+    height:32px;
+    background:#e5e7eb;
+}
+
+.search-action{
+    border-radius: 50%;
+    width: 52px;
+    height: 52px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-right: 4px;
+    background: #0000FF;
+    border: none;
+    color: #fff;
+    transition: transform 0.2s ease;
+}
+
+.search-action:hover {
+    background: #0000cc;
+    transform: scale(1.05);
+}
+
+/* Responsive: stack on small screens */
+@media (max-width: 767px){
+    .main-search-bar{
+        flex-direction: column !important;
+        border-radius: 20px !important;
+        padding: 15px !important;
+    }
+
+    .divider-vert{ display:none }
+
+    .search-segment{
+        width: 100%;
+        border-bottom: 1px solid #eee;
+        border-radius: 0;
+    }
+
+    .search-action{
+        width: 100%;
+        border-radius: 12px;
+        margin-left: 0;
+        margin-top: 15px;
+    }
+}
+
+.filter-bar{
+    border: 1px solid #e9ecef;
+}
+
+.car-card{
+    transition: 0.3s ease;
+}
+
+.car-card.hidden{
+    display: none;
+}
+
+
+.card {
+    border-radius: 18px;
+}
+
+.form-control,
+.form-select {
+    border-radius: 12px;
+    padding: 12px;
+}
+
+/* =========================
+   HOST DASHBOARD
+========================= */
+
+.dashboard-sidebar{
+    background: #0000FF;
+    min-height: 100vh;
+}
+
+.dashboard-nav .nav-link{
+    color: rgba(255,255,255,0.8);
+    padding: 12px 15px;
+    border-radius: 12px;
+    transition: 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.dashboard-nav .nav-link:hover,
+.dashboard-nav .nav-link.active{
+    background: rgba(255,255,255,0.15);
+    color: #ffffff;
+}
+
+.dashboard-content{
+    background: #f8f9fa;
+    min-height: 100vh;
+}
+
+.dashboard-card{
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 25px;
+    border: 1px solid #e9ecef;
+    transition: 0.3s ease;
+}
+
+.dashboard-card:hover{
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+}
+
+.dashboard-icon{
+    width: 55px;
+    height: 55px;
+    border-radius: 14px;
+    background: #e7f1ff;
+    color: #0000FF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+}
+
+.dashboard-section{
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 25px;
+    border: 1px solid #e9ecef;
+}
+
+/* =========================
+   SUBSCRIPTION PLANS
+========================= */
+
+.plan-card{
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 35px;
+    border: 1px solid #e9ecef;
+    position: relative;
+    transition: 0.3s ease;
+    height: 100%;
+}
+
+.plan-card:hover{
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+}
+
+.featured-plan{
+    border: 2px solid #0000FF;
+}
+
+.featured-badge{
+    position: absolute;
+    top: -12px;
+    right: 20px;
+    background: #0000FF;
+    color: #ffffff;
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.plan-features{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.plan-features li{
+    margin-bottom: 14px;
+    color: #495057;
+}
+
+.insurance-section{
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 40px;
+    border: 1px solid #e9ecef;
+}
+
+/* =========================
+   DYNAMIC VEHICLE CARDS
+========================= */
+
+.vehicle-image{
+    height: 230px;
+    object-fit: cover;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+}
+
+.vehicle-card{
+    border-radius: 16px;
+    overflow: hidden;
+    transition: 0.3s ease;
+}
+
+.vehicle-card:hover{
+    transform: translateY(-4px);
+    box-shadow: 0 18px 35px rgba(0,0,0,0.08);
+}
+
+.auth-card {
+    border: none;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2);
+    padding: 40px;
+}
+
+.auth-page-wrapper {
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), 
+                url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: calc(100vh - 80px);
+    display: flex;
+    align-items: center;
+}
+
+.auth-title {
+    font-weight: 700;
+    font-size: 28px;
+}
+
+.auth-subtitle {
+    color: #6c757d;
+    margin-bottom: 20px;
+}
+
+/* Payment methods */
+
+.payment-methods{
+    display:flex;
+    flex-direction:row;
+    flex-wrap:wrap;
+    gap:15px;
+}
+
+.payment-option input{
+    display:none;
+}
+
+.payment-option {
+    flex: 1;
+    min-width: 140px;
+}
+
+.payment-card{
+    border:2px solid #e5e5e5;
+    border-radius:16px;
+    padding:18px 20px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    gap:15px;
+    cursor:pointer;
+    transition:0.3s ease;
+    background:#fff;
+}
+
+.payment-card:hover{
+    border-color:#0d6efd;
+    transform:translateY(-2px);
+}
+
+.payment-option input:checked + .payment-card{
+    border-color:#0d6efd;
+    background:#f4f8ff;
+}
+
+.payment-logo{
+    width:48px;
+    height:auto;
+}
+
+.payment-icon {
+    font-size: 24px;
+}
+
+.payment-card span{
+    font-weight:600;
+    font-size:14px;
+}
+
+.payment-details-box {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 16px;
+    border: 1px solid #e5e5e5;
+}
+
+/* Flatpickr disabled day styles */
+.flatpickr-day.flatpickr-disabled {
+    background: #ffe5e5;
+    color: #999;
+    border-color: #ffe5e5;
+    cursor: not-allowed;
+}

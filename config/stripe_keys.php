@@ -1,0 +1,3 @@
+<?php
+
+define('STRIPE_PUBLISHABLE_KEY', 'pk_test_51TYi8c042PUdxLzd6IgVmSVq1crrWy0DxWNPmRLQ5MXZx3o4zfoJUO6jtGB52MZ6tNqgv1JhSJvf2etpANrjCzQc00U7MYj5Ho');

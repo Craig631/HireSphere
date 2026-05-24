@@ -1,0 +1,39 @@
+body {
+    background: #f6f7fb;
+    font-family: Arial, sans-serif;
+}
+
+.sidebar {
+    background: #111827;
+    color: white;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.sidebar a {
+    color: #cbd5e1;
+    display: block;
+    padding: 10px 0;
+    text-decoration: none;
+    transition: 0.2s ease;
+}
+
+.sidebar a:hover {
+    color: white;
+    padding-left: 5px;
+}
+
+.card-modern {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+.stat-value {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.btn-modern {
+    border-radius: 10px;
+}

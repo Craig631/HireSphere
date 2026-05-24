@@ -1,0 +1,22 @@
+# Environment
+.env
+
+# Composer
+/vendor/
+
+# Node
+/node_modules/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+
+# VS Code
+.vscode/
+
+# Temporary
+tmp/
+cache/.env
+vendor/
