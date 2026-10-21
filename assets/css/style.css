@@ -1029,3 +1029,9 @@ input[type=number] {
     border-color: #ffe5e5;
     cursor: not-allowed;
 }
+
+/* Hide only the large search bar beside the homepage car image.
+   The navbar search and vehicle filters remain available. */
+.hero-section #main-search-bar {
+    display: none;
+}

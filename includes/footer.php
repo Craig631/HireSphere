@@ -193,5 +193,8 @@
     <!-- CUSTOM JS -->
     <script src="assets/js/script.js"></script>
 
+    <!-- Enable the profile menu's appearance controls after the HTML has loaded. -->
+    <script src="assets/js/appearance.js"></script>
+
 </body>
 </html>

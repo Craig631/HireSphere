@@ -4,6 +4,30 @@ if(session_status() === PHP_SESSION_NONE) session_start();
 require_once 'config/google.php';
 $google_login_url = $client->createAuthUrl();
 
+// Check the existing login session without changing the user's account role.
+$navLoggedIn = isset($_SESSION['user_id']);
+$navIsHost = $navLoggedIn && ($_SESSION['role'] ?? '') === 'host';
+
+// Identify host pages so the correct navigation option is highlighted.
+$navCurrentPage = basename($_SERVER['SCRIPT_NAME']);
+$navHostPages = [
+    'host-dashboard.php',
+    'host-bookings.php',
+    'host-calendar.php',
+    'add-vehicle.php',
+    'edit-vehicle.php',
+    'subscriptions.php'
+];
+$navHostActive = in_array($navCurrentPage, $navHostPages, true);
+
+// Escape account details before displaying them inside HTML.
+$navName = htmlspecialchars(
+    (string) ($_SESSION['name'] ?? 'Member'),
+    ENT_QUOTES,
+    'UTF-8'
+);
+$navRole = $navIsHost ? 'Host' : 'Customer';
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,6 +52,28 @@ $google_login_url = $client->createAuthUrl();
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="assets/css/style.css">
+<!-- Load appearance overrides after the original site styles. -->
+<link rel="stylesheet" href="assets/css/appearance.css">
+
+<!-- Apply the saved theme before the page is painted to reduce flashing. -->
+<script>
+    (() => {
+        let theme = 'light';
+
+        // Storage can be unavailable in some browser privacy configurations.
+        try {
+            const savedTheme = localStorage.getItem('hiresphere-theme');
+
+            if (savedTheme === 'light' || savedTheme === 'dark') {
+                theme = savedTheme;
+            }
+        } catch (error) {
+            // Continue with light mode when storage cannot be read.
+        }
+
+        document.documentElement.setAttribute('data-bs-theme', theme);
+    })();
+</script>
 </head>
 
 <body>
@@ -91,38 +137,93 @@ $google_login_url = $client->createAuthUrl();
 
             </div>
 
-            <!-- RIGHT SIDE -->
-            <ul class="navbar-nav align-items-lg-center">
+            <!-- RIGHT SIDE: page switcher and account dropdown. -->
+            <ul class="navbar-nav align-items-lg-center gap-2">
 
-                <li class="nav-item">
-                    <a class="nav-link" href="add-vehicle.php">
-                        Become a Host
-                    </a>
-                </li>
+                <?php if ($navIsHost): ?>
+                    <li class="nav-item">
+                        <!-- Links change the current page; they do not change account permissions. -->
+                        <div class="hs-mode-switch" role="group" aria-label="Choose workspace">
 
-                <?php if(isset($_SESSION['name'])): ?>
+                            <a href="index.php"
+                               class="hs-mode-link <?= !$navHostActive ? 'active' : '' ?>"
+                               <?= !$navHostActive ? 'aria-current="page"' : '' ?>>
+                                <i class="bi bi-house-door" aria-hidden="true"></i>
+                                Guest
+                            </a>
+
+                            <a href="host-dashboard.php"
+                               class="hs-mode-link <?= $navHostActive ? 'active' : '' ?>"
+                               <?= $navHostActive ? 'aria-current="page"' : '' ?>>
+                                <i class="bi bi-grid" aria-hidden="true"></i>
+                                Host
+                            </a>
+
+                        </div>
+                    </li>
+                <?php endif; ?>
+
+                <?php if ($navLoggedIn): ?>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Welcome, <?php echo $_SESSION['name']; ?>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <?php if(isset($_SESSION['role']) && $_SESSION['role'] === 'host'): ?>
-                                <li><a class="dropdown-item" href="host-dashboard.php">Host Dashboard</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                            <?php endif; ?>
-                            <li><a class="dropdown-item" href="logout.php">Logout</a></li>
+
+                        <!-- Bootstrap opens this menu using the bundle already in your footer. -->
+                        <button class="nav-link dropdown-toggle hs-profile-button"
+                                type="button"
+                                id="hsProfileMenu"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false">
+
+                            <i class="bi bi-person-circle fs-4" aria-hidden="true"></i>
+                            <span><?= $navName ?></span>
+
+                        </button>
+
+                        <ul class="dropdown-menu dropdown-menu-end shadow"
+                            aria-labelledby="hsProfileMenu">
+
+                            <!-- Settings opens a modal instead of changing the page layout. -->
+                            <li>
+                                <button class="dropdown-item"
+                                        type="button"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#hsSettingsModal">
+                                    <i class="bi bi-gear me-2" aria-hidden="true"></i>
+                                    Settings
+                                </button>
+                            </li>
+
+                            <!-- JavaScript updates this button's icon and label. -->
+                            <li>
+                                <button class="dropdown-item"
+                                        type="button"
+                                        data-hs-theme-toggle
+                                        aria-pressed="false">
+                                    <i class="bi bi-moon-stars me-2"
+                                       data-hs-theme-icon
+                                       aria-hidden="true"></i>
+                                    <span data-hs-theme-label>Switch to dark mode</span>
+                                </button>
+                            </li>
+
+                            <li><hr class="dropdown-divider"></li>
+
+                            <!-- Keep using your existing logout handler. -->
+                            <li>
+                                <a class="dropdown-item text-danger" href="logout.php">
+                                    <i class="bi bi-box-arrow-right me-2" aria-hidden="true"></i>
+                                    Logout
+                                </a>
+                            </li>
+
                         </ul>
                     </li>
                 <?php else: ?>
+                    <!-- Visitors retain normal registration and login links. -->
                     <li class="nav-item">
-                        <a class="nav-link" href="add-vehicle.php">
-                            Become a Host
-                        </a>
+                        <a class="nav-link" href="register.php">Become a Host</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="login.php" data-bs-toggle="modal" data-bs-target="#loginModal">
-                            Login
-                        </a>
+                        <a class="nav-link" href="login.php">Login</a>
                     </li>
                 <?php endif; ?>
 
@@ -133,6 +234,60 @@ $google_login_url = $client->createAuthUrl();
     </div>
 
 </nav>
+
+<?php if ($navLoggedIn): ?>
+<!-- Account settings: displays current session details without updating the database. -->
+<div class="modal fade"
+     id="hsSettingsModal"
+     tabindex="-1"
+     aria-labelledby="hsSettingsTitle"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="hsSettingsTitle">
+                    Account settings
+                </h5>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <!-- These fields are read-only; profile editing needs a separate handler. -->
+                <dl class="row mb-4">
+                    <dt class="col-4">Name</dt>
+                    <dd class="col-8"><?= $navName ?></dd>
+
+                    <dt class="col-4">Account</dt>
+                    <dd class="col-8"><?= $navRole ?></dd>
+                </dl>
+
+                <h6>Appearance</h6>
+                <p class="text-muted small">
+                    Your appearance preference is saved in this browser.
+                </p>
+
+                <!-- Reuses the same theme action as the profile dropdown. -->
+                <button class="btn btn-outline-primary"
+                        type="button"
+                        data-hs-theme-toggle
+                        aria-pressed="false">
+                    <i class="bi bi-moon-stars me-2"
+                       data-hs-theme-icon
+                       aria-hidden="true"></i>
+                    <span data-hs-theme-label>Switch to dark mode</span>
+                </button>
+
+            </div>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
 
 <!-- =========================
      LOGIN MODAL
@@ -381,5 +536,3 @@ $google_login_url = $client->createAuthUrl();
     </div>
 
 </div>
-
-</nav>

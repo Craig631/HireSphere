@@ -27,7 +27,6 @@ function calculateBooking(){
     }
 
     // CONVERT DATES
-    const pickup = new Date(pickupDate.value);
     const returning = new Date(returnDate.value);
 
     // CALCULATE DIFFERENCE
@@ -137,71 +136,89 @@ passwordToggles.forEach(toggle => {
 // HIRESPHERE FILTER SYSTEM
 // ===============================
 
-const filterType = document.getElementById("filterType");
-const filterPrice = document.getElementById("filterPrice");
-const filterTransmission = document.getElementById("filterTransmission");
-const resetFilters = document.getElementById("resetFilters");
+(() => {
+    // Run only on pages containing the vehicle filter sidebar.
+    const typeFilter = document.getElementById("filterType");
+    const priceFilter = document.getElementById("filterPrice");
+    const transmissionFilter = document.getElementById("filterTransmission");
+    const resetButton = document.getElementById("resetFilters");
+    const resultCount = document.getElementById("hsResultsCount");
+    const emptyMessage = document.getElementById("hsNoResults");
 
-const cars = document.querySelectorAll(".car-card");
+    if (!typeFilter || !priceFilter || !transmissionFilter) {
+        return;
+    }
 
-// APPLY FILTERS
-function applyFilters(){
+    // Select the complete listing cards, including their filter data.
+    const listingCards = document.querySelectorAll(
+        "#featured-vehicles .car-card"
+    );
 
-    cars.forEach(car => {
+    function filterListings() {
+        let visibleCount = 0;
 
-        let type = car.dataset.type;
-        let price = parseInt(car.dataset.price);
-        let transmission = car.dataset.transmission;
+        listingCards.forEach((card) => {
+            // Parse decimal prices without rounding them down.
+            const price = Number(card.dataset.price);
 
-        let typeMatch =
-            filterType.value === "all" ||
-            filterType.value === type;
+            const matchesType =
+                typeFilter.value === "all" ||
+                typeFilter.value === card.dataset.type;
 
-        let transmissionMatch =
-            filterTransmission.value === "all" ||
-            filterTransmission.value === transmission;
+            const matchesTransmission =
+                transmissionFilter.value === "all" ||
+                transmissionFilter.value === card.dataset.transmission;
 
-        let priceMatch = true;
+            // Apply the selected daily budget range.
+            let matchesPrice = true;
 
-        if(filterPrice.value === "low"){
-            priceMatch = price < 5000;
+            if (priceFilter.value === "low") {
+                matchesPrice = price < 5000;
+            } else if (priceFilter.value === "mid") {
+                matchesPrice = price >= 5000 && price <= 10000;
+            } else if (priceFilter.value === "high") {
+                matchesPrice = price > 10000;
+            }
+
+            const visible =
+                matchesType && matchesTransmission && matchesPrice;
+
+            // Hide the entire card to avoid leaving empty listing spaces.
+            card.classList.toggle("hidden", !visible);
+
+            if (visible) {
+                visibleCount++;
+            }
+        });
+
+        // Announce the current number of matching listings.
+        if (resultCount) {
+            resultCount.textContent =
+                `${visibleCount} vehicle${visibleCount === 1 ? "" : "s"}`;
         }
-        else if(filterPrice.value === "mid"){
-            priceMatch = price >= 5000 && price <= 10000;
-        }
-        else if(filterPrice.value === "high"){
-            priceMatch = price > 10000;
-        }
 
-        if(typeMatch && transmissionMatch && priceMatch){
-            car.classList.remove("hidden");
-        }else{
-            car.classList.add("hidden");
+        // Explain an empty result instead of leaving a blank area.
+        if (emptyMessage) {
+            emptyMessage.hidden = visibleCount !== 0;
         }
+    }
 
+    // Reapply filters whenever a sidebar selection changes.
+    [typeFilter, priceFilter, transmissionFilter].forEach((filter) => {
+        filter.addEventListener("change", filterListings);
     });
 
-}
-
-// EVENT LISTENERS
-if (filterType && filterPrice && filterTransmission) {
-    filterType.addEventListener("change", applyFilters);
-    filterPrice.addEventListener("change", applyFilters);
-    filterTransmission.addEventListener("change", applyFilters);
-}
-
-// RESET
-if (resetFilters) {
-    resetFilters.addEventListener("click", () => {
-
-        if (filterType) filterType.value = "all";
-        if (filterPrice) filterPrice.value = "all";
-        if (filterTransmission) filterTransmission.value = "all";
-
-        applyFilters();
-
+    // Reset every filter and display all available listings.
+    resetButton?.addEventListener("click", () => {
+        typeFilter.value = "all";
+        priceFilter.value = "all";
+        transmissionFilter.value = "all";
+        filterListings();
     });
-}
+
+    // Initialize the count and empty state when the page loads.
+    filterListings();
+})();
 
 // ===============================
 // SOCIAL LOGIN HANDLER

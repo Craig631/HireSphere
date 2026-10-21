@@ -1,0 +1,1337 @@
+/* Keep the Guest / Host control compact inside the existing navbar. */
+.hs-mode-switch {
+    display: inline-flex;
+    gap: 4px;
+    padding: 4px;
+    border: 1px solid var(--bs-border-color);
+    border-radius: 999px;
+    background: var(--bs-tertiary-bg);
+}
+
+/* Both navigation options use the same spacing and shape. */
+.hs-mode-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    color: var(--bs-body-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+/* Highlight the workspace represented by the current page. */
+.hs-mode-link.active {
+    background: #0057ff;
+    color: #fff;
+}
+
+/* Keep keyboard focus visible for accessible navigation. */
+.hs-mode-link:focus-visible,
+.hs-profile-button:focus-visible {
+    outline: 3px solid #669aff;
+    outline-offset: 3px;
+}
+
+/* Align the profile icon, name, and dropdown arrow. */
+.hs-profile-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 0;
+    background: transparent;
+    color: inherit;
+}
+
+/* Dark mode changes colors while preserving existing spacing and layout. */
+html[data-bs-theme="dark"] body {
+    background-color: #101722;
+    color: #e8edf5;
+}
+
+/* Override light backgrounds used by the existing Bootstrap markup. */
+html[data-bs-theme="dark"] .bg-white,
+html[data-bs-theme="dark"] .bg-light,
+html[data-bs-theme="dark"] .navbar,
+html[data-bs-theme="dark"] .modal-content,
+html[data-bs-theme="dark"] .auth-modal,
+html[data-bs-theme="dark"] .search-pill,
+html[data-bs-theme="dark"] .dashboard-card,
+html[data-bs-theme="dark"] .card {
+    background-color: #192332 !important;
+    color: #e8edf5;
+}
+
+/* Style the dashboard background independently of its sidebar. */
+html[data-bs-theme="dark"] .dashboard-content {
+    background-color: #101722;
+    color: #e8edf5;
+}
+
+/* Make navigation and search text readable on dark surfaces. */
+html[data-bs-theme="dark"] .navbar .nav-link,
+html[data-bs-theme="dark"] .navbar .brand-text,
+html[data-bs-theme="dark"] .search-pill span {
+    color: #e8edf5;
+}
+
+/* Preserve muted text hierarchy with sufficient contrast. */
+html[data-bs-theme="dark"] .text-muted {
+    color: #acb9cb !important;
+}
+
+/* Existing custom inputs may otherwise retain their light backgrounds. */
+html[data-bs-theme="dark"] .form-control,
+html[data-bs-theme="dark"] .form-select {
+    background-color: #111b29;
+    border-color: #43516a;
+    color: #e8edf5;
+}
+
+html[data-bs-theme="dark"] .form-control::placeholder {
+    color: #acb9cb;
+}
+
+/* =========================================================
+   COMPLETE DARK-MODE OVERRIDES
+   These rules apply only when dark mode is selected.
+   ========================================================= */
+
+/* Shared colors keep Bootstrap and custom components consistent. */
+html[data-bs-theme="dark"] {
+    color-scheme: dark;
+
+    --hs-page: #101722;
+    --hs-surface: #192332;
+    --hs-raised: #223044;
+    --hs-border: #35445a;
+    --hs-text: #edf2fa;
+    --hs-muted: #afbdd0;
+    --hs-accent: #8ab4ff;
+
+    --bs-body-bg: var(--hs-page);
+    --bs-body-color: var(--hs-text);
+    --bs-secondary-color: var(--hs-muted);
+    --bs-tertiary-bg: var(--hs-raised);
+    --bs-border-color: var(--hs-border);
+    --bs-heading-color: var(--hs-text);
+    --bs-link-color: var(--hs-accent);
+    --bs-link-hover-color: #b5cfff;
+}
+
+/* Replace the homepage's pale gradient with a dark blue gradient. */
+html[data-bs-theme="dark"] .hero-section {
+    background: linear-gradient(120deg, #101722, #192b45);
+    color: var(--hs-text);
+}
+
+/* Keep large page backgrounds consistent with the selected theme. */
+html[data-bs-theme="dark"] .featured-section,
+html[data-bs-theme="dark"] .vehicle-details-section,
+html[data-bs-theme="dark"] .dashboard-content {
+    background: var(--hs-page);
+    color: var(--hs-text);
+}
+
+/* Replace fixed white backgrounds on the site's custom panels. */
+html[data-bs-theme="dark"] .hero-search,
+html[data-bs-theme="dark"] .vehicle-card,
+html[data-bs-theme="dark"] .details-card,
+html[data-bs-theme="dark"] .booking-card,
+html[data-bs-theme="dark"] .feature-box,
+html[data-bs-theme="dark"] .dashboard-card,
+html[data-bs-theme="dark"] .dashboard-section,
+html[data-bs-theme="dark"] .plan-card,
+html[data-bs-theme="dark"] .insurance-section,
+html[data-bs-theme="dark"] .auth-card,
+html[data-bs-theme="dark"] .payment-method,
+html[data-bs-theme="dark"] .payment-card,
+html[data-bs-theme="dark"] .filter-bar {
+    background: var(--hs-surface);
+    color: var(--hs-text);
+    border-color: var(--hs-border);
+}
+
+/* Give smaller information panels a slightly brighter surface. */
+html[data-bs-theme="dark"] .spec-box,
+html[data-bs-theme="dark"] .insurance-box,
+html[data-bs-theme="dark"] .price-summary,
+html[data-bs-theme="dark"] .host-cta,
+html[data-bs-theme="dark"] .payment-details-box {
+    background: var(--hs-raised);
+    color: var(--hs-text);
+    border-color: var(--hs-border);
+}
+
+/* Fix the main homepage search bar, which uses an ID selector. */
+html[data-bs-theme="dark"] #main-search-bar,
+html[data-bs-theme="dark"] .search-pill {
+    background: var(--hs-surface);
+    color: var(--hs-text);
+    border-color: var(--hs-border);
+}
+
+/* Highlight search segments without turning them light gray. */
+html[data-bs-theme="dark"] .search-segment:hover {
+    background: var(--hs-raised);
+}
+
+/* Make search labels and entered values readable. */
+html[data-bs-theme="dark"] .segment-label,
+html[data-bs-theme="dark"] .segment-input,
+html[data-bs-theme="dark"] .segment-input:focus {
+    color: var(--hs-text);
+}
+
+/* Keep secondary text softer than headings without losing contrast. */
+html[data-bs-theme="dark"] .hero-text,
+html[data-bs-theme="dark"] .auth-subtitle,
+html[data-bs-theme="dark"] .segment-icon,
+html[data-bs-theme="dark"] .plan-features li,
+html[data-bs-theme="dark"] .password-toggle {
+    color: var(--hs-muted);
+}
+
+html[data-bs-theme="dark"] .segment-input::placeholder {
+    color: var(--hs-muted);
+    opacity: 1;
+}
+
+/* Match search separators and mobile segment borders to dark surfaces. */
+html[data-bs-theme="dark"] .divider,
+html[data-bs-theme="dark"] .divider-vert,
+html[data-bs-theme="dark"] .auth-divider::before {
+    background: var(--hs-border);
+}
+
+html[data-bs-theme="dark"] .search-segment {
+    border-color: var(--hs-border);
+}
+
+/* Category navigation retains its existing position and dimensions. */
+html[data-bs-theme="dark"] .category-bar {
+    background: var(--hs-surface);
+    border-color: var(--hs-border);
+}
+
+html[data-bs-theme="dark"] .category-btn {
+    background: var(--hs-surface);
+    color: var(--hs-text);
+    border-color: var(--hs-border);
+}
+
+html[data-bs-theme="dark"] .category-btn:hover {
+    background: var(--hs-raised);
+    color: var(--hs-accent);
+    border-color: var(--hs-accent);
+}
+
+/* Keep selected categories visually distinct from unselected ones. */
+html[data-bs-theme="dark"] .category-btn.active {
+    background: #0057ff;
+    border-color: #0057ff;
+    color: #fff;
+}
+
+/* Replace bright blue sidebar backgrounds with a deeper blue. */
+html[data-bs-theme="dark"] .dashboard-sidebar {
+    background: #122344;
+}
+
+/* Keep icons and highlighted badges visible on dark backgrounds. */
+html[data-bs-theme="dark"] .dashboard-icon,
+html[data-bs-theme="dark"] .hero-badge {
+    background: #233b60;
+    color: #b5cfff;
+}
+
+html[data-bs-theme="dark"] .feature-box i,
+html[data-bs-theme="dark"] .payment-method i {
+    color: var(--hs-accent);
+}
+
+/* Retain a clear selected state for both payment selector designs. */
+html[data-bs-theme="dark"] .active-payment,
+html[data-bs-theme="dark"] .payment-option input:checked + .payment-card {
+    background: #203858;
+    border-color: var(--hs-accent);
+}
+
+/* Fix white strips behind the authentication divider and social buttons. */
+html[data-bs-theme="dark"] .auth-divider span,
+html[data-bs-theme="dark"] .btn-google,
+html[data-bs-theme="dark"] .btn-microsoft {
+    background: var(--hs-surface);
+    color: var(--hs-text);
+    border-color: var(--hs-border);
+}
+
+html[data-bs-theme="dark"] .btn-google:hover,
+html[data-bs-theme="dark"] .btn-microsoft:hover {
+    background: var(--hs-raised);
+    color: var(--hs-text);
+}
+
+/* Replace hard-coded blue text where it is too dark to read. */
+html[data-bs-theme="dark"] .text-primary {
+    color: var(--hs-accent) !important;
+}
+
+/* Override Bootstrap's explicit dark-text utility on dark panels. */
+html[data-bs-theme="dark"] .text-dark,
+html[data-bs-theme="dark"] .text-black {
+    color: var(--hs-text) !important;
+}
+
+/* Give outline buttons readable text and visible borders. */
+html[data-bs-theme="dark"] .btn-outline-primary {
+    color: var(--hs-accent);
+    border-color: var(--hs-accent);
+}
+
+html[data-bs-theme="dark"] .btn-outline-primary:hover {
+    background: #0057ff;
+    border-color: #0057ff;
+    color: #fff;
+}
+
+/* Bootstrap tables define their own colors, so set their variables directly. */
+html[data-bs-theme="dark"] .table {
+    --bs-table-color: var(--hs-text);
+    --bs-table-bg: var(--hs-surface);
+    --bs-table-border-color: var(--hs-border);
+    --bs-table-striped-bg: #202d40;
+    --bs-table-striped-color: var(--hs-text);
+    --bs-table-hover-bg: #26364c;
+    --bs-table-hover-color: var(--hs-text);
+}
+
+/* Override explicitly light table headers if the dashboard uses them. */
+html[data-bs-theme="dark"] .table-light {
+    --bs-table-color: var(--hs-text);
+    --bs-table-bg: var(--hs-raised);
+    --bs-table-border-color: var(--hs-border);
+}
+
+/* Keep dropdown menus aligned with the site's dark palette. */
+html[data-bs-theme="dark"] .dropdown-menu {
+    --bs-dropdown-bg: var(--hs-surface);
+    --bs-dropdown-color: var(--hs-text);
+    --bs-dropdown-link-color: var(--hs-text);
+    --bs-dropdown-link-hover-bg: var(--hs-raised);
+    --bs-dropdown-link-hover-color: var(--hs-text);
+    --bs-dropdown-border-color: var(--hs-border);
+}
+
+/* Flatpickr has separate styles and does not inherit Bootstrap's theme. */
+html[data-bs-theme="dark"] .flatpickr-calendar,
+html[data-bs-theme="dark"] .flatpickr-months .flatpickr-month,
+html[data-bs-theme="dark"] .flatpickr-current-month .flatpickr-monthDropdown-months,
+html[data-bs-theme="dark"] .flatpickr-monthDropdown-months option,
+html[data-bs-theme="dark"] .flatpickr-weekdays,
+html[data-bs-theme="dark"] span.flatpickr-weekday {
+    background: var(--hs-surface);
+    color: var(--hs-text);
+}
+
+/* Set calendar text and arrow colors explicitly. */
+html[data-bs-theme="dark"] .flatpickr-day,
+html[data-bs-theme="dark"] .flatpickr-current-month,
+html[data-bs-theme="dark"] .flatpickr-current-month input.cur-year {
+    color: var(--hs-text);
+}
+
+html[data-bs-theme="dark"] .flatpickr-months .flatpickr-prev-month,
+html[data-bs-theme="dark"] .flatpickr-months .flatpickr-next-month {
+    color: var(--hs-text);
+    fill: var(--hs-text);
+}
+
+/* Make available dates respond visibly to mouse and keyboard interaction. */
+html[data-bs-theme="dark"] .flatpickr-day:hover,
+html[data-bs-theme="dark"] .flatpickr-day:focus {
+    background: var(--hs-raised);
+    border-color: var(--hs-border);
+}
+
+/* Distinguish selected dates from unavailable dates. */
+html[data-bs-theme="dark"] .flatpickr-day.selected,
+html[data-bs-theme="dark"] .flatpickr-day.startRange,
+html[data-bs-theme="dark"] .flatpickr-day.endRange {
+    background: #0057ff;
+    border-color: #0057ff;
+    color: #fff;
+}
+
+html[data-bs-theme="dark"] .flatpickr-day.inRange {
+    background: #233b60;
+    border-color: #233b60;
+    box-shadow: -5px 0 0 #233b60, 5px 0 0 #233b60;
+}
+
+html[data-bs-theme="dark"] .flatpickr-day.prevMonthDay,
+html[data-bs-theme="dark"] .flatpickr-day.nextMonthDay {
+    color: #91a1b8;
+}
+
+html[data-bs-theme="dark"] .flatpickr-day.flatpickr-disabled,
+html[data-bs-theme="dark"] .flatpickr-day.flatpickr-disabled:hover {
+    background: #352832;
+    border-color: #352832;
+    color: #a798a3;
+}
+
+/* Keep the footer visually connected to the rest of dark mode. */
+html[data-bs-theme="dark"] .footer-section {
+    background: #0c1320;
+    color: var(--hs-text);
+}
+
+/* =========================================================
+   PREMIUM HOMEPAGE HERO
+   Unique class names keep these styles separate from cards,
+   filters, the navbar, and the previous hero styles.
+   ========================================================= */
+
+/* Keep the promotional banner dark in both appearance modes. */
+.hs-premium-hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    min-height: 660px;
+    background: #080e17;
+    color: #fff;
+}
+
+/* Position the photograph across the right side of the banner. */
+.hs-hero-visual {
+    position: absolute;
+    inset: 0 0 0 34%;
+    z-index: -2;
+}
+
+/* Fill the image area without stretching the car photograph. */
+.hs-hero-car {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 62% center;
+}
+
+/* Blend the photograph into the text area instead of showing a rectangle. */
+.hs-premium-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+        linear-gradient(
+            90deg,
+            #080e17 0%,
+            #080e17 27%,
+            rgba(8, 14, 23, 0.94) 38%,
+            rgba(8, 14, 23, 0.45) 58%,
+            rgba(8, 14, 23, 0.08) 80%
+        ),
+        linear-gradient(
+            0deg,
+            rgba(8, 14, 23, 0.95),
+            transparent 35%
+        );
+}
+
+/* Preserve the same Bootstrap container alignment as the rest of the page. */
+.hs-hero-container {
+    display: flex;
+    align-items: center;
+    min-height: 660px;
+    padding-top: 70px;
+    padding-bottom: 85px;
+}
+
+/* Limit the text width so the car remains the main visual on the right. */
+.hs-hero-copy {
+    width: 52%;
+    max-width: 620px;
+}
+
+/* Small introductory label above the main headline. */
+.hs-hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 24px;
+    color: #c1d0e6;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+}
+
+/* Blue indicator provides a subtle connection to HireSphere's branding. */
+.hs-hero-eyebrow > span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #397cff;
+    box-shadow: 0 0 18px rgba(57, 124, 255, 0.65);
+}
+
+/* Large typography recreates the strong hierarchy of the reference. */
+.hs-hero-heading {
+    margin: 0;
+    color: #fff;
+    font-size: clamp(2.8rem, 5.1vw, 5rem);
+    font-weight: 800;
+    line-height: 1.04;
+    letter-spacing: -0.045em;
+}
+
+/* A lighter blue accent remains readable against the dark background. */
+.hs-hero-heading > span {
+    color: #8ab4ff;
+}
+
+/* Keep supporting copy readable without competing with the headline. */
+.hs-hero-description {
+    max-width: 410px;
+    margin: 25px 0 0;
+    color: #bac6d8;
+    font-size: 0.95rem;
+    line-height: 1.8;
+}
+
+/* Allow action buttons to wrap naturally on smaller screens. */
+.hs-hero-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px 24px;
+    margin-top: 30px;
+}
+
+/* Shared button alignment and typography. */
+.hs-hero-primary,
+.hs-hero-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    min-height: 48px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+/* Main action uses the existing HireSphere brand blue. */
+.hs-hero-primary {
+    padding: 14px 22px;
+    border: 1px solid #0057ff;
+    border-radius: 8px;
+    background: #0057ff;
+    color: #fff;
+}
+
+/* Explicit colors prevent global link styles changing the hero buttons. */
+.hs-hero-primary:hover {
+    background: #0048d6;
+    border-color: #0048d6;
+    color: #fff;
+}
+
+/* Secondary action is quieter so browsing remains the primary action. */
+.hs-hero-secondary {
+    color: #e0e8f5;
+}
+
+.hs-hero-secondary:hover {
+    color: #8ab4ff;
+}
+
+/* Visible keyboard focus supports accessible navigation. */
+.hs-hero-primary:focus-visible,
+.hs-hero-secondary:focus-visible {
+    outline: 3px solid #a9c8ff;
+    outline-offset: 5px;
+}
+
+/* Compact feature row replaces the reference's statistics area. */
+.hs-hero-highlights {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 45px;
+    padding-top: 22px;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.hs-hero-highlights > div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #c1cddd;
+    font-size: 0.72rem;
+}
+
+.hs-hero-highlights i {
+    color: #8ab4ff;
+    font-size: 1rem;
+}
+
+/* Small caption sits over the lower-right part of the photograph. */
+.hs-hero-caption {
+    position: absolute;
+    right: 5%;
+    bottom: 34px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #c1cddd;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+}
+
+.hs-caption-line {
+    display: block;
+    width: 38px;
+    height: 2px;
+    background: #397cff;
+}
+
+/* Leave room for the fixed navbar when jumping to vehicle listings. */
+#featured-vehicles {
+    scroll-margin-top: 100px;
+}
+
+/* On tablets and phones, show the text above a dedicated car image area. */
+@media (max-width: 991px) {
+    .hs-premium-hero {
+        min-height: auto;
+    }
+
+    .hs-hero-container {
+        min-height: auto;
+        padding-top: 55px;
+        padding-bottom: 30px;
+    }
+
+    .hs-hero-copy {
+        width: 100%;
+        max-width: 620px;
+    }
+
+    .hs-hero-heading {
+        font-size: clamp(2.6rem, 8vw, 4.5rem);
+    }
+
+    /* Move the photograph into normal flow beneath the text. */
+    .hs-hero-visual {
+        position: relative;
+        inset: auto;
+        height: clamp(260px, 50vw, 440px);
+        z-index: auto;
+    }
+
+    /* Reorder the container above the photograph without changing the HTML. */
+    .hs-premium-hero {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .hs-hero-container {
+        order: -1;
+    }
+
+    /* Desktop blending is replaced with a fade above the mobile photograph. */
+    .hs-premium-hero::before {
+        display: none;
+    }
+
+    .hs-hero-visual::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: linear-gradient(
+            180deg,
+            #080e17 0%,
+            transparent 28%,
+            transparent 75%,
+            #080e17 100%
+        );
+    }
+
+    .hs-hero-caption {
+        display: none;
+    }
+}
+
+/* =========================================================
+   VEHICLE LISTINGS
+   Separate class names prevent changes to dashboard cards.
+   ========================================================= */
+
+/* Theme variables cover the sidebar and listing cards together. */
+#featured-vehicles {
+    --listing-surface: #fff;
+    --listing-soft: #f5f8fc;
+    --listing-border: #e3e9f1;
+    --listing-text: #182234;
+    --listing-muted: #627086;
+    --listing-accent: #0057ff;
+}
+
+/* Use matching dark surfaces when the appearance toggle is enabled. */
+html[data-bs-theme="dark"] #featured-vehicles {
+    --listing-surface: #192332;
+    --listing-soft: #223044;
+    --listing-border: #35445a;
+    --listing-text: #edf2fa;
+    --listing-muted: #afbdd0;
+    --listing-accent: #8ab4ff;
+}
+
+/* Keep desktop filters visible while scrolling through listings. */
+.hs-filter-panel {
+    position: sticky;
+    top: 100px;
+    padding: 24px;
+    border: 1px solid var(--listing-border);
+    border-radius: 18px;
+    background: var(--listing-surface);
+    color: var(--listing-text);
+}
+
+/* Small heading and results badge provide a clear listing header. */
+.hs-listing-eyebrow {
+    color: var(--listing-accent);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+}
+
+.hs-results-count {
+    padding: 8px 14px;
+    border-radius: 30px;
+    background: var(--listing-soft);
+    color: var(--listing-text);
+    font-size: 0.8rem;
+    white-space: nowrap;
+}
+
+/* Stack horizontal cards with consistent spacing. */
+.hs-listings {
+    display: grid;
+    gap: 20px;
+}
+
+/* The photograph takes roughly one third of the desktop listing. */
+.hs-listing-card {
+    display: grid;
+    grid-template-columns: minmax(220px, 35%) minmax(0, 1fr);
+    overflow: hidden;
+    border: 1px solid var(--listing-border);
+    border-radius: 18px;
+    background: var(--listing-surface);
+    color: var(--listing-text);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hs-listing-card:hover {
+    border-color: var(--listing-accent);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.1);
+}
+
+/* Explicitly hide filtered grid cards, overriding their display property. */
+.hs-listing-card.hidden {
+    display: none;
+}
+
+/* Crop uploaded photos consistently without stretching them. */
+.hs-listing-photo {
+    display: block;
+    min-height: 260px;
+    background: var(--listing-soft);
+}
+
+.hs-listing-photo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Flexible content spacing keeps the actions at the bottom. */
+.hs-listing-body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 0;
+    padding: 24px;
+}
+
+.hs-listing-top {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+/* Category label and vehicle title form the primary information group. */
+.hs-vehicle-type {
+    color: var(--listing-accent);
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.hs-listing-title {
+    margin: 7px 0 0;
+    font-size: 1.2rem;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+.hs-listing-title a {
+    color: var(--listing-text);
+    text-decoration: none;
+}
+
+.hs-listing-title a:hover {
+    color: var(--listing-accent);
+}
+
+/* Price remains prominent without competing with the vehicle name. */
+.hs-listing-price {
+    display: flex;
+    flex-direction: column;
+}
+
+.hs-listing-price strong {
+    color: var(--listing-accent);
+    font-size: 1.1rem;
+}
+
+.hs-listing-price > span {
+    color: var(--listing-muted);
+    font-size: 0.75rem;
+}
+
+/* Two specification tiles use actual database fields. */
+.hs-listing-specs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.hs-listing-specs > div {
+    display: grid;
+    grid-template-columns: 22px minmax(0, 1fr);
+    gap: 3px 8px;
+    padding: 12px;
+    border-radius: 10px;
+    background: var(--listing-soft);
+}
+
+.hs-listing-specs i {
+    grid-row: span 2;
+    align-self: center;
+    color: var(--listing-accent);
+}
+
+.hs-listing-specs span {
+    color: var(--listing-muted);
+    font-size: 0.65rem;
+}
+
+.hs-listing-specs strong {
+    font-size: 0.78rem;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+/* Separate the action row from the specification area. */
+.hs-listing-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid var(--listing-border);
+}
+
+.hs-listing-bottom .btn {
+    font-size: 0.8rem;
+    padding: 10px 16px;
+}
+
+/* Let the filter panel scroll normally above results on smaller screens. */
+@media (max-width: 991px) {
+    .hs-filter-panel {
+        position: static;
+    }
+}
+
+/* Stack each photo above its details on phones. */
+@media (max-width: 767px) {
+    .hs-listing-card {
+        grid-template-columns: 1fr;
+    }
+
+    .hs-listing-photo {
+        min-height: 0;
+        height: 230px;
+    }
+
+    .hs-listing-body {
+        padding: 20px;
+    }
+}
+
+/* Host dashboard workspace layout and light appearance defaults. */
+.hs-host-shell {
+    --host-page: #f5f7fb;
+    --host-surface: #fff;
+    --host-soft: #edf2fc;
+    --host-text: #202b40;
+    --host-muted: #68758b;
+    --host-border: #e4e9f2;
+    --host-accent: #245bdf;
+
+    display: grid;
+    grid-template-columns: 225px minmax(0, 1fr);
+    min-height: calc(100vh - 80px);
+    background: var(--host-page);
+    color: var(--host-text);
+}
+
+/* The existing theme switch updates these colors automatically. */
+html[data-bs-theme="dark"] .hs-host-shell {
+    --host-page: #101722;
+    --host-surface: #192332;
+    --host-soft: #24324a;
+    --host-text: #edf2fa;
+    --host-muted: #afbdd0;
+    --host-border: #35445a;
+    --host-accent: #8ab4ff;
+}
+
+/* Sidebar uses a quiet surface instead of the previous solid blue background. */
+.hs-host-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 30px 18px;
+    border-right: 1px solid var(--host-border);
+    background: var(--host-surface);
+}
+
+/* Small brand block identifies the current workspace. */
+.hs-host-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 32px;
+}
+
+.hs-host-brand-icon {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    background: #0057ff;
+    color: #fff;
+}
+
+.hs-host-brand strong,
+.hs-host-brand small {
+    display: block;
+}
+
+.hs-host-brand strong {
+    font-size: 0.85rem;
+}
+
+.hs-host-brand small,
+.hs-host-nav-label {
+    color: var(--host-muted);
+    font-size: 0.68rem;
+}
+
+.hs-host-nav-label {
+    margin-bottom: 8px;
+    letter-spacing: 0.1em;
+}
+
+/* Navigation buttons and links share the same alignment. */
+.hs-host-nav {
+    display: grid;
+    gap: 6px;
+}
+
+.hs-host-nav a,
+.hs-host-nav button,
+.hs-host-logout {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 14px;
+    border: 0;
+    border-radius: 9px;
+    background: transparent;
+    color: var(--host-muted);
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-decoration: none;
+    text-align: left;
+}
+
+/* Highlight the selected page and hovered navigation controls. */
+.hs-host-nav a.active,
+.hs-host-nav a:hover,
+.hs-host-nav button:hover {
+    background: var(--host-soft);
+    color: var(--host-accent);
+}
+
+/* Push logout toward the bottom on larger screens. */
+.hs-host-logout {
+    margin-top: auto;
+    color: var(--host-text);
+}
+
+.hs-host-logout:hover {
+    background: var(--host-soft);
+    color: var(--host-accent);
+}
+
+/* Keep keyboard navigation visible. */
+.hs-host-sidebar a:focus-visible,
+.hs-host-sidebar button:focus-visible {
+    outline: 3px solid var(--host-accent);
+    outline-offset: 2px;
+}
+
+/* Main column must be allowed to shrink so tables scroll inside it. */
+.hs-host-main {
+    min-width: 0;
+    padding: 30px;
+}
+
+.hs-host-heading,
+.hs-host-section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+
+.hs-host-heading {
+    margin-bottom: 26px;
+}
+
+.hs-host-breadcrumb {
+    margin-bottom: 8px;
+    color: var(--host-muted);
+    font-size: 0.7rem;
+}
+
+.hs-host-heading h1 {
+    margin-bottom: 8px;
+    color: var(--host-text);
+    font-size: clamp(1.35rem, 2vw, 1.9rem);
+    font-weight: 700;
+}
+
+.hs-host-muted {
+    color: var(--host-muted);
+}
+
+/* Blue overview banner echoes the reference without using an image asset. */
+.hs-host-overview {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 24px;
+    padding: 24px;
+    border-radius: 18px;
+    background:
+        radial-gradient(circle at 95% 10%, #6476ef 0, transparent 45%),
+        linear-gradient(115deg, #173d9d, #365ce4);
+    color: #fff;
+}
+
+.hs-host-section-heading {
+    margin-bottom: 22px;
+}
+
+.hs-host-section-heading h2 {
+    margin: 0;
+    color: inherit;
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.hs-host-period {
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.15);
+    font-size: 0.7rem;
+}
+
+/* Three equal metric cards match the reference's overview strip. */
+.hs-host-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.hs-host-stat {
+    min-width: 0;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.hs-host-stat > span,
+.hs-host-stat > strong,
+.hs-host-stat > small {
+    display: block;
+}
+
+.hs-host-stat > span {
+    font-size: 0.75rem;
+}
+
+.hs-host-stat > strong {
+    margin: 12px 0 7px;
+    color: #fff;
+    font-size: clamp(1.25rem, 2vw, 1.8rem);
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+}
+
+.hs-host-stat > small {
+    color: #e1e9ff;
+    font-size: 0.68rem;
+}
+
+/* Two analytics panels sit between overview totals and the fleet table. */
+.hs-host-analytics {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.hs-host-panel {
+    min-width: 0;
+    padding: 24px;
+    border: 1px solid var(--host-border);
+    border-radius: 16px;
+    background: var(--host-surface);
+    color: var(--host-text);
+}
+
+/* Status bars show the proportion of each booking state. */
+.hs-host-status-row {
+    margin-top: 18px;
+}
+
+.hs-host-status-row > div:first-child {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 8px;
+    font-size: 0.75rem;
+}
+
+.hs-host-status-row .progress {
+    height: 7px;
+    background: var(--host-soft);
+}
+
+.hs-host-status-row .progress-bar {
+    background: var(--host-accent);
+}
+
+/* Fleet reach ring uses the percentage calculated by PHP. */
+.hs-host-reach {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.hs-host-ring {
+    display: grid;
+    place-items: center;
+    width: 140px;
+    height: 140px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: conic-gradient(
+        var(--host-accent) var(--reach),
+        var(--host-soft) 0
+    );
+}
+
+.hs-host-ring > div {
+    display: grid;
+    place-content: center;
+    width: 116px;
+    height: 116px;
+    border-radius: 50%;
+    background: var(--host-surface);
+    text-align: center;
+}
+
+.hs-host-ring strong {
+    font-size: 1.7rem;
+}
+
+.hs-host-ring span {
+    color: var(--host-muted);
+    font-size: 0.7rem;
+}
+
+.hs-host-reach h3 {
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.hs-host-reach p {
+    font-size: 0.78rem;
+    line-height: 1.7;
+}
+
+/* Badges use neutral language rather than unverified account claims. */
+.hs-host-pill {
+    display: inline-block;
+    padding: 6px 11px;
+    border-radius: 20px;
+    background: var(--host-soft);
+    color: var(--host-accent);
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+/* Set Bootstrap table variables locally for both appearance modes. */
+.hs-host-shell .hs-host-table {
+    --bs-table-bg: var(--host-surface);
+    --bs-table-color: var(--host-text);
+    --bs-table-border-color: var(--host-border);
+    margin-bottom: 0;
+    font-size: 0.78rem;
+}
+
+.hs-host-table th {
+    padding-top: 14px;
+    padding-bottom: 14px;
+    color: var(--host-muted);
+    font-size: 0.7rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.hs-host-table td {
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+
+/* Fleet images provide a visual anchor beside each vehicle's name. */
+.hs-host-vehicle {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 190px;
+}
+
+.hs-host-vehicle img {
+    width: 58px;
+    height: 44px;
+    border-radius: 8px;
+    object-fit: cover;
+    background: var(--host-soft);
+}
+
+.hs-host-vehicle strong,
+.hs-host-vehicle small {
+    display: block;
+}
+
+.hs-host-vehicle small {
+    margin-top: 4px;
+    color: var(--host-muted);
+}
+
+/* Anchor links account for the fixed shared navbar. */
+.hs-host-shell [id] {
+    scroll-margin-top: 110px;
+}
+
+/* Collapse the sidebar above the workspace on tablets and phones. */
+@media (max-width: 991px) {
+    .hs-host-shell {
+        grid-template-columns: 1fr;
+    }
+
+    .hs-host-sidebar {
+        padding: 20px;
+        border-right: 0;
+        border-bottom: 1px solid var(--host-border);
+    }
+
+    .hs-host-brand {
+        margin-bottom: 18px;
+    }
+
+    .hs-host-nav {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .hs-host-logout {
+        margin-top: 12px;
+    }
+
+    .hs-host-main {
+        padding: 22px;
+    }
+
+    .hs-host-analytics {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Stack metrics and simplify navigation on narrow phones. */
+@media (max-width: 575px) {
+    .hs-host-main {
+        padding: 16px;
+    }
+
+    .hs-host-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .hs-host-nav {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .hs-host-panel,
+    .hs-host-overview {
+        padding: 18px;
+    }
+
+    .hs-host-reach {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
