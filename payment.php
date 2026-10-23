@@ -1,58 +1,87 @@
 <?php
 require_once "auth/guard.php";
-include "config/database.php";
+require_once "config/database.php";
 require_once "config/stripe.php";
 
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-$user_id = $_SESSION['user_id'] ?? null;
+$user_id = (int) $_SESSION['user_id'];
+$booking_id = (int) ($_GET['booking_id'] ?? 0);
 
-if (!$user_id) {
-    die("User not logged in");
-}
-
-if (!isset($_GET['vehicle_id']) || empty($_GET['vehicle_id'])) {
-    die("Vehicle not found. Please go back and try again.");
-}
-
-$vehicle_id = (int)$_GET['vehicle_id'];
-$amount = isset($_GET['amount']) ? (float)$_GET['amount'] : 0;
-$booking_id = isset($_GET['booking_id']) ? (int)$_GET['booking_id'] : null;
-$user_id = (int)$user_id; // Cast to int after null check
-// Fetch vehicle details from DB
-$stmt = mysqli_prepare($conn,
-    "SELECT vehicle_name, price_per_day FROM vehicles WHERE id = ?"
+$stmt = mysqli_prepare(
+    $conn,
+    "SELECT b.*, v.vehicle_name, v.price_per_day, v.host_id
+     FROM bookings b
+     JOIN vehicles v ON v.id = b.vehicle_id
+     WHERE b.id = ? AND b.user_id = ?"
 );
-
-mysqli_stmt_bind_param($stmt, "i", $vehicle_id);
+mysqli_stmt_bind_param($stmt, 'ii', $booking_id, $user_id);
 mysqli_stmt_execute($stmt);
+$booking = mysqli_stmt_get_result($stmt)->fetch_assoc();
 
-$result = mysqli_stmt_get_result($stmt);
-
-if (mysqli_num_rows($result) == 0) {
-    die("Invalid vehicle.");
+if (!$booking) {
+    http_response_code(404);
+    exit('Booking not found.');
 }
 
-$vehicle = mysqli_fetch_assoc($result);
+if (!in_array($booking['status'], ['pending', 'approved', 'confirmed'], true)) {
+    http_response_code(409);
+    exit('This booking is no longer payable.');
+}
 
-$vehicle_name = $vehicle['vehicle_name'];
+if ((int) $booking['host_id'] === $user_id) {
+    http_response_code(403);
+    exit('You cannot book your own vehicle.');
+}
 
-// Fallback if amount wasn't passed in URL correctly
+if ($booking['payment_status'] === 'paid') {
+    exit('This booking has already been paid.');
+}
+
+$vehicle_id = (int) $booking['vehicle_id'];
+$vehicle_name = $booking['vehicle_name'];
+$amount = (float) $booking['paid_amount'];
+
 if ($amount <= 0) {
-    $amount = (float)$vehicle['price_per_day'];
+    exit('The booking total is invalid. Please contact support.');
 }
 
 if (isset($_POST['pay'])) {
     $method = $_POST['method'];
 
     if ($method == "stripe") {
-        // Insert record first to get the payment_id for the success URL
-        $stmt_pay = mysqli_prepare($conn, "INSERT INTO payments (user_id, vehicle_id, amount, method, status) VALUES (?, ?, ?, 'stripe', 'pending')");
-        mysqli_stmt_bind_param($stmt_pay, "iid", $user_id, $vehicle_id, $amount);
+        $stmt_pay = mysqli_prepare(
+            $conn,
+            "INSERT INTO payments
+             (booking_id, user_id, vehicle_id, amount, method, status)
+             VALUES (?, ?, ?, ?, 'stripe', 'pending')"
+        );
+        mysqli_stmt_bind_param(
+            $stmt_pay,
+            'iiid',
+            $booking_id,
+            $user_id,
+            $vehicle_id,
+            $amount
+        );
         mysqli_stmt_execute($stmt_pay);
         
         $payment_id = mysqli_insert_id($conn);
+
+        /* Create a private return token for this checkout attempt. */
+        $cancelToken = bin2hex(random_bytes(32));
+
+        /* Store the token in the customer's session, associated with this payment. */
+        $_SESSION['checkout_returns'][$payment_id] = [
+            'token' => $cancelToken,
+            'email_sent' => false
+        ];
+
+        /* Include the payment reference so the cancellation page finds the right booking. */
+        $cancelUrl = 'http://localhost:8000/hiresphere/payment-cancel.php?payment_id='
+            . $payment_id . '&token=' . urlencode($cancelToken);
+
         $session = \Stripe\Checkout\Session::create([
             'payment_method_types' => ['card'],
             'line_items' => [[
@@ -71,23 +100,32 @@ if (isset($_POST['pay'])) {
                 'vehicle_id' => $vehicle_id
             ],
             'mode' => 'payment',
-            'success_url' => 'http://localhost/hiresphere/payment-success.php?payment_id=' . $payment_id . '&session_id={CHECKOUT_SESSION_ID}',
-            'cancel_url' => "http://localhost/hiresphere/payment-cancel.php",
+            'success_url' => 'http://localhost:8000/hiresphere/payment-success.php?payment_id='
+                . $payment_id . '&session_id={CHECKOUT_SESSION_ID}',
+            /* Stripe returns the customer here when they leave checkout. */
+            'cancel_url' => $cancelUrl,
         ]);
 
         $session_id = $session->id;
         
-        // Update the record with the stripe_session_id
-        mysqli_query($conn, "UPDATE payments SET stripe_session_id = '$session_id' WHERE id = $payment_id");
+        $stmt_session = mysqli_prepare(
+            $conn,
+            'UPDATE payments SET stripe_session_id = ? WHERE id = ?'
+        );
+        mysqli_stmt_bind_param($stmt_session, 'si', $session_id, $payment_id);
+        mysqli_stmt_execute($stmt_session);
 
         header("Location: " . $session->url);
         exit;
     } elseif ($method == "mpesa") {
         $mpesa_phone = $_POST['mpesa_phone'] ?? '';
-        if (!empty($mpesa_phone) && $booking_id) {
+        if (!empty($mpesa_phone)) {
             // Update the booking with the specific M-Pesa phone number provided in the form
-            $stmt_update = mysqli_prepare($conn, "UPDATE bookings SET customer_phone = ? WHERE id = ?");
-            mysqli_stmt_bind_param($stmt_update, "si", $mpesa_phone, $booking_id);
+            $stmt_update = mysqli_prepare(
+                $conn,
+                'UPDATE bookings SET customer_phone = ? WHERE id = ? AND user_id = ?'
+            );
+            mysqli_stmt_bind_param($stmt_update, 'sii', $mpesa_phone, $booking_id, $user_id);
             mysqli_stmt_execute($stmt_update);
             
             // Redirect to trigger the M-Pesa STK Push
@@ -97,8 +135,21 @@ if (isset($_POST['pay'])) {
     }
 
     // Prepared statement for other methods
-    $stmt_alt = mysqli_prepare($conn, "INSERT INTO payments (user_id, vehicle_id, amount, method, status) VALUES (?, ?, ?, ?, 'pending')");
-    mysqli_stmt_bind_param($stmt_alt, "iids", $user_id, $vehicle_id, $amount, $method);
+    $stmt_alt = mysqli_prepare(
+        $conn,
+        "INSERT INTO payments
+         (booking_id, user_id, vehicle_id, amount, method, status)
+         VALUES (?, ?, ?, ?, ?, 'pending')"
+    );
+    mysqli_stmt_bind_param(
+        $stmt_alt,
+        'iiids',
+        $booking_id,
+        $user_id,
+        $vehicle_id,
+        $amount,
+        $method
+    );
     mysqli_stmt_execute($stmt_alt);
 
     $payment_msg = "Payment initiated using " . htmlspecialchars($method);
@@ -108,7 +159,7 @@ if (isset($_POST['pay'])) {
 
 ?>
 
-<?php include 'includes/header.php'; ?>
+<?php include_once 'includes/header.php'; ?>
 
 <style>
     .payment-option {
@@ -321,6 +372,7 @@ if (isset($_POST['pay'])) {
                                 name="mpesa_phone"
                                 class="form-control"
                                 placeholder="07XXXXXXXX"
+                                value="<?php echo htmlspecialchars($booking['customer_phone'] ?? '', ENT_QUOTES, 'UTF-8'); ?>"
                             >
 
                         </div>
@@ -433,4 +485,4 @@ paymentOptions.forEach(option => {
 
 </script>
 
-<?php include 'includes/footer.php'; ?>
+<?php include_once 'includes/footer.php'; ?>

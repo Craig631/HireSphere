@@ -82,22 +82,12 @@ $navRole = $navIsHost ? 'Host' : 'Customer';
 
     <div class="container">
 
-        <!-- BRAND -->
-        <a class="navbar-brand d-flex align-items-center gap-3" href="index.php">
-
-    <span class="home-icon">
-
-        🏠
-
-    </span>
-
-    <span class="brand-text">
-
-        HireSphere
-
-    </span>
-
-</a>
+        <!-- Company logo links back to the marketplace homepage. -->
+        <a class="navbar-brand hs-brand" href="/hiresphere/index.php">
+            <img src="/hiresphere/assets/images/hiresphere-logo.png"
+                 alt="HireSphere — homepage"
+                 class="hs-company-logo">
+        </a>
 
         <!-- MOBILE TOGGLER -->
         <button class="navbar-toggler"

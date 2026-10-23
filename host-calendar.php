@@ -1,21 +1,26 @@
 <?php
 session_start();
-include 'config/database.php';
+require_once 'config/database.php';
 
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'host') {
     die("Access denied");
 }
 
-$host_id = $_SESSION['user_id'];
+$host_id = (int) $_SESSION['user_id'];
 
-$data = mysqli_query($conn,
-"SELECT b.vehicle_id, b.start_date, b.end_date, v.vehicle_name
- FROM bookings b
- JOIN vehicles v ON b.vehicle_id = v.id
- WHERE v.host_id = $host_id"
+$stmt = mysqli_prepare(
+        $conn,
+        "SELECT b.vehicle_id, b.start_date, b.end_date, v.vehicle_name
+         FROM bookings b
+         JOIN vehicles v ON b.vehicle_id = v.id
+         WHERE v.host_id = ?
+             AND b.status IN ('pending', 'approved', 'confirmed')"
 );
+mysqli_stmt_bind_param($stmt, 'i', $host_id);
+mysqli_stmt_execute($stmt);
+$data = mysqli_stmt_get_result($stmt);
 
-include 'includes/header.php';
+include_once 'includes/header.php';
 ?>
 
 <div class="container py-4">
@@ -32,4 +37,4 @@ include 'includes/header.php';
     </div>
 </div>
 
-<?php include 'includes/footer.php'; ?>
+<?php include_once 'includes/footer.php'; ?>

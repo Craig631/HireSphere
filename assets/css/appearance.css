@@ -1335,3 +1335,120 @@ html[data-bs-theme="dark"] .hs-host-shell {
         align-items: flex-start;
     }
 }
+
+/* Pure-black page backgrounds with charcoal cards for visual separation. */
+html[data-bs-theme="dark"] {
+    --hs-page: #000000;
+    --hs-surface: #111111;
+    --hs-raised: #1b1b1b;
+    --hs-border: #333333;
+
+    --bs-body-bg: #000000;
+    --bs-tertiary-bg: #1b1b1b;
+    --bs-border-color: #333333;
+}
+
+/* Replace the earlier fixed dark-blue page backgrounds. */
+html[data-bs-theme="dark"] body,
+html[data-bs-theme="dark"] .dashboard-content,
+html[data-bs-theme="dark"] .featured-section,
+html[data-bs-theme="dark"] .vehicle-details-section {
+    background: #000000;
+}
+
+/* Override surfaces whose previous styles used fixed blue colors. */
+html[data-bs-theme="dark"] .bg-white,
+html[data-bs-theme="dark"] .bg-light,
+html[data-bs-theme="dark"] .navbar,
+html[data-bs-theme="dark"] .modal-content,
+html[data-bs-theme="dark"] .auth-modal,
+html[data-bs-theme="dark"] .search-pill,
+html[data-bs-theme="dark"] .dashboard-card,
+html[data-bs-theme="dark"] .card {
+    background-color: #111111 !important;
+}
+
+/* Give the horizontal vehicle listings the same neutral palette. */
+html[data-bs-theme="dark"] #featured-vehicles {
+    --listing-surface: #111111;
+    --listing-soft: #1b1b1b;
+    --listing-border: #333333;
+}
+
+/* Apply black and charcoal to the redesigned host dashboard. */
+html[data-bs-theme="dark"] .hs-host-shell {
+    --host-page: #000000;
+    --host-surface: #111111;
+    --host-soft: #1b1b1b;
+    --host-border: #333333;
+}
+
+/* Replace the dashboard's blue overview banner with a charcoal gradient. */
+html[data-bs-theme="dark"] .hs-host-overview {
+    background: linear-gradient(115deg, #111111, #252525);
+}
+
+/* Keep inputs readable against the black page. */
+html[data-bs-theme="dark"] .form-control,
+html[data-bs-theme="dark"] .form-select {
+    background-color: #181818;
+    border-color: #333333;
+    color: #edf2fa;
+}
+
+/* Remove the remaining blue sidebar and footer backgrounds. */
+html[data-bs-theme="dark"] .dashboard-sidebar,
+html[data-bs-theme="dark"] .footer-section {
+    background: #000000;
+}
+
+/* Neutralize the homepage hero and blend its photograph into black. */
+html[data-bs-theme="dark"] .hs-premium-hero {
+    background: #000000;
+}
+
+html[data-bs-theme="dark"] .hs-premium-hero::before {
+    background:
+        linear-gradient(
+            90deg,
+            #000 0%,
+            #000 27%,
+            rgba(0, 0, 0, 0.94) 38%,
+            rgba(0, 0, 0, 0.45) 58%,
+            rgba(0, 0, 0, 0.08) 80%
+        ),
+        linear-gradient(0deg, #000, transparent 35%);
+}
+
+/* Match the mobile hero's image fade to the black background. */
+@media (max-width: 991px) {
+    html[data-bs-theme="dark"] .hs-hero-visual::after {
+        background: linear-gradient(
+            180deg,
+            #000 0%,
+            transparent 28%,
+            transparent 75%,
+            #000 100%
+        );
+    }
+}
+
+/* Display the complete logo without stretching or cropping it. */
+.hs-company-logo {
+    display: block;
+    width: 210px;
+    max-width: 100%;
+    height: auto;
+}
+
+/* Keep the brand from shrinking when the navbar contains other controls. */
+.hs-brand {
+    flex-shrink: 0;
+}
+
+/* Reduce the logo slightly on smaller screens. */
+@media (max-width: 575px) {
+    .hs-company-logo {
+        width: 165px;
+    }
+}

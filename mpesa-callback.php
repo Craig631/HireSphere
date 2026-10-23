@@ -5,6 +5,8 @@ ini_set('display_errors', 1);
 
 $callbackJSON = file_get_contents('php://input');
 require_once 'includes/mailer.php';
+/* Load the reusable branded layout for payment emails. */
+require_once __DIR__ . '/includes/email-template.php';
 $data = json_decode($callbackJSON, true);
 
 // Save raw logs (important for debugging)
@@ -33,7 +35,8 @@ foreach ($metadata as $item) {
     if ($item['Name'] == 'PhoneNumber') $phone = $item['Value'];
 }
 
-$conn = new mysqli("localhost", "hiresphere_user", "8964", "hiresphere");
+/* Load the shared database connection without embedding credentials here. */
+require_once __DIR__ . '/config/database.php';
 
 if ($conn->connect_error) {
     die("DB Connection failed");
@@ -92,15 +95,64 @@ if ($resultCode == 0) {
 
     sendEmail($to, $subject, $body);
 } else {
+    /*
+     * Record an unsuccessful M-Pesa attempt.
+     * Keep the booking status unchanged so payment failure does not
+     * automatically reject or cancel the customer's reservation.
+     */
     $stmt = $conn->prepare("
         UPDATE bookings 
         SET payment_status = 'failed'
         WHERE checkout_request_id = ?
+          AND payment_status NOT IN ('paid', 'failed')
     ");
 
-    $stmt->bind_param("s", $checkout);
+    $stmt->bind_param('s', $checkout);
     $stmt->execute();
+
+    /* Only the first update should trigger an email for this attempt. */
+    $paymentChanged = $stmt->affected_rows === 1;
     $stmt->close();
+
+    if ($paymentChanged && $res) {
+        /* Use the contact email supplied on the booking form. */
+        $recipient = trim((string) ($res['customer_email'] ?? ''));
+
+        $reference = 'HS-' . (int) $res['id'];
+
+        /*
+         * Use accurate wording for cancellations, timeouts, and other failures.
+         * The provider's reason explains what happened to this payment attempt.
+         */
+        $subject = "M-Pesa payment not completed — {$reference}";
+
+        /*
+         * Pass original database values, not already-escaped variables.
+         * The shared template escapes every value automatically.
+         */
+        $body = hsEmailTemplate(
+            (string) ($res['customer_name'] ?? 'Customer'),
+            'Your payment needs another try',
+            'Your M-Pesa payment was not completed. Your booking reference and rental details are shown below.',
+            [
+                'Booking reference' => 'HS-' . (int) $res['id'],
+                'Vehicle' => $res['vehicle_name'],
+                'Pickup date' => $res['start_date'],
+                'Return date' => $res['end_date'],
+                'Payment update' => $resultDesc
+            ],
+            'This payment result has not cancelled your reservation. Sign in to check its status before trying again. If you received a debit notification, contact support before retrying.',
+            '#0057ff'
+        );
+
+        /* Email delivery failure must not interrupt callback processing. */
+        if (!sendEmail($recipient, $subject, $body)) {
+            error_log(
+                'HireSphere: M-Pesa failure email could not be sent for booking '
+                . (int) $res['id']
+            );
+        }
+    }
 }
 
 // Only log to mpesa_payments if it was a success, 

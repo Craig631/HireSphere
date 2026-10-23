@@ -8,9 +8,12 @@
             <!-- BRAND -->
             <div class="col-lg-4">
 
-                <h3 class="footer-logo">
-                    HireSphere
-                </h3>
+                <!-- Reuse the company identity in the website footer. -->
+                <a href="/hiresphere/index.php" class="d-inline-block">
+                    <img src="/hiresphere/assets/images/hiresphere-logo.png"
+                         alt="HireSphere — homepage"
+                         class="hs-company-logo">
+                </a>
 
                 <p class="footer-text mt-4">
 

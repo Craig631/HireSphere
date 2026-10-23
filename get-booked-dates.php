@@ -1,19 +1,21 @@
 <?php
 
-include 'config/database.php';
+require_once 'config/database.php';
 
-$vehicle_id = $_GET['vehicle_id'];
-
-$query = mysqli_query($conn,
-    "SELECT start_date, end_date
-     FROM bookings
-     WHERE vehicle_id = $vehicle_id
-     AND status != 'cancelled'"
+$vehicleId = (int) ($_GET['vehicle_id'] ?? 0);
+$stmt = $conn->prepare(
+        "SELECT start_date, end_date
+         FROM bookings
+         WHERE vehicle_id = ?
+             AND status IN ('pending', 'approved', 'confirmed')"
 );
+$stmt->bind_param('i', $vehicleId);
+$stmt->execute();
+$query = $stmt->get_result();
 
 $disabledDates = [];
 
-while($row = mysqli_fetch_assoc($query)) {
+while ($row = $query->fetch_assoc()) {
 
     $start = strtotime($row['start_date']);
     $end = strtotime($row['end_date']);
@@ -27,4 +29,3 @@ while($row = mysqli_fetch_assoc($query)) {
 }
 
 echo json_encode($disabledDates);
-?>

@@ -5,6 +5,11 @@ error_reporting(E_ALL);
 
 include 'config/database.php';
 
+/* Load the shared email service used for account notifications. */
+require_once __DIR__ . '/includes/mailer.php';
+/* Load the shared branded email layout. */
+require_once __DIR__ . '/includes/email-template.php';
+
 if(isset($_POST['register'])){
 
     $name = $_POST['name'];
@@ -23,9 +28,40 @@ if(isset($_POST['register'])){
         mysqli_stmt_bind_param($stmt, "ssss", $name, $email, $password, $role);
         $exec_result = mysqli_stmt_execute($stmt);
 
-        if($exec_result){
+        if ($exec_result) {
             mysqli_stmt_close($stmt);
-            header("Location: login.php");
+
+            /* Describe what the newly registered account can do. */
+            $accountMessage = $role === 'host'
+                ? 'List your vehicles, manage rental requests, and rent vehicles from other hosts.'
+                : 'Explore vehicles, choose your rental dates, and book your next drive.';
+
+            /* Build the welcome message using the shared HireSphere design. */
+            $body = hsEmailTemplate(
+                $name,
+                'Your next journey starts here',
+                'Welcome to HireSphere! Your account has been created successfully.',
+                [
+                    'Name' => $name,
+                    'Account type' => ucfirst($role),
+                    'Email address' => $email
+                ],
+                $accountMessage . ' Sign in to get started.'
+            );
+
+            /* Deliver to the new user's registration email. */
+            $emailSent = sendEmail(
+                $email,
+                'Welcome aboard — HireSphere',
+                $body
+            );
+
+            /* Registration remains successful even if email delivery fails. */
+            if (!$emailSent) {
+                error_log('HireSphere: welcome email delivery failed.');
+            }
+
+            header('Location: login.php');
             exit;
         } else {
             $error = "Registration failed. Please check your details.";
